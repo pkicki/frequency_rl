@@ -62,7 +62,8 @@ class LowPassGaussianTorchPolicy(EntropyProjectionGaussianTorchPolicy):
     deviation. The standard deviation is not state-dependent.
 
     """
-    def __init__(self, network, input_shape, output_shape, cutoff_freq=None, order=1, sampling_freq=20., std_0=1., policy_state_shape=None, **params):
+    def __init__(self, network, input_shape, output_shape, entropy_projection_method="default",
+                 cutoff_freq=None, order=1, sampling_freq=20., normalize_std=False, std_0=1., policy_state_shape=None, **params):
         """
         Constructor.
 
@@ -75,7 +76,9 @@ class LowPassGaussianTorchPolicy(EntropyProjectionGaussianTorchPolicy):
             params (dict): parameters used by the network constructor.
 
         """
-        super().__init__(network, input_shape, output_shape, std_0=std_0, policy_state_shape=policy_state_shape, **params)
+        super().__init__(network, input_shape, output_shape, entropy_projection_method=entropy_projection_method,
+                         std_0=std_0, policy_state_shape=policy_state_shape, **params)
+        self.normalize_std = normalize_std
         lp_filter_b, lp_filter_a = butter(order, cutoff_freq, fs=sampling_freq,
                                           btype='low', analog=False)
         self.lp_filter_a = torch.tensor(lp_filter_a, dtype=torch.float32)
@@ -112,6 +115,9 @@ class LowPassGaussianTorchPolicy(EntropyProjectionGaussianTorchPolicy):
         #import matplotlib.pyplot as plt
         #plt.plot(noise[0, :, 0].detach().numpy(), label="original")
         #plt.plot(noise_filtered[0, :, 0].detach().numpy(), label="filtered")
+        if self.normalize_std:
+            scale = noise_filtered.std(0).mean()
+            noise_filtered = noise_filtered / scale
         #scale = noise_filtered.std(0).mean()
         #noise_filtered = noise_filtered / scale
         #plt.plot(noise_filtered[0, :, 0].detach().numpy(), label="filtered&scaled")

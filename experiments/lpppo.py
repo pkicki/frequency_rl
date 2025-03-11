@@ -27,11 +27,15 @@ def experiment(env_name: str = "ant",
                lam: float = 0.95,
                std_0: float = 1.0,
                n_steps_per_fit: int = 2000,
-               initial_entropy_lb: float = 11.35,
+               #ent_projection_type: str = "default",
+               ent_projection_type: str = "indep",
+               #initial_entropy_lb: float = 11.35,
+               initial_entropy_lb: float = 0,
                entropy_lb: float = -11.35,
                entropy_lb_ep: int = 20,
                order: int = 1,
                cutoff_freq: float = 9.,
+               normalize_std: bool = True,
                results_dir:str = "results",
                #debug: bool = False,
                debug: bool = True,
@@ -62,13 +66,15 @@ def experiment(env_name: str = "ant",
         std_0=std_0,
         order=order,
         cutoff_freq=cutoff_freq,
+        ent_projection_type=ent_projection_type,
+        normalize_std=normalize_std,
     )
     agent = agent_builder(policy_name, env, agent_params)
 
     config = {**env_params, **agent_params, **training_params}
     mode = "disabled" if debug else "online"
     group_name = f"{env_name}_{policy_name}_o{order}_f{cutoff_freq}_nep{n_epochs}_nsteps{n_steps}_nstpf{n_steps_per_fit}_alr{actor_lr}_clr{critic_lr}_" \
-                 f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}"
+                 f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}_ept{ent_projection_type}{'_normstd' if normalize_std else ''}"
     if group_name_prefix:
         group_name = f"{group_name_prefix}_{group_name}"
     wandb.init(project="corl25_initial_experiments", config=config, dir=results_dir, entity="kicai",

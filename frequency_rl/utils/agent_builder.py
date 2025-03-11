@@ -35,6 +35,8 @@ def agent_builder(policy_name, mdp, agent_params):
         cutoff_freq=agent_params["cutoff_freq"],
         order=agent_params["order"],
         sampling_freq=1. / mdp.info.dt,
+        entropy_projection_method=agent_params["ent_projection_type"],
+        normalize_std=agent_params["normalize_std"],
     )
 
     agent = alg(mdp.info, policy, actor_optimizer=actor_optimizer,
