@@ -1,6 +1,7 @@
 experiments/results
 experiments/logs
 *.py[cod]
-*.eeg-info/
+*.egg-info/
 __pycache__/
+results/
 

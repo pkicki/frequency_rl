@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "frequency_rl"
+dependencies = [
+    "torch>=2.6.0",
+    "wandb",
+    "experiment_launcher",
+    "mushroom_rl"
+    ]
+
+requires-python = ">=3.8"
+authors = [{name="Piotr Kicki", email="piotr.kicki@ideas-ncbr.pl"}]
+
+maintainers = [{ name="Piotr Kicki", email="piotr.kicki@ideas-ncbr.pl"}]
+description = 'Effcient RL exploration by frequency domain analysis'
+readme = "README.md"
+#license = { file= "LICENSE" }
+keywords = ["Reinforcement Learning", "Frequency domain"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dynamic = ["version", "optional-dependencies"]
