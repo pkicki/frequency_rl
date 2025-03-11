@@ -1,0 +1,6 @@
+experiments/results
+experiments/logs
+*.py[cod]
+*.eeg-info/
+__pycache__/
+
