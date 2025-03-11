@@ -35,6 +35,7 @@ def experiment(env_name: str = "ant",
                results_dir:str = "results",
                #debug: bool = False,
                debug: bool = True,
+               group_name_prefix: str = "",
                seed: int = 0,
     ):
     np.random.seed(seed)
@@ -67,7 +68,9 @@ def experiment(env_name: str = "ant",
     config = {**env_params, **agent_params, **training_params}
     mode = "disabled" if debug else "online"
     group_name = f"{env_name}_{policy_name}_o{order}_f{cutoff_freq}_nep{n_epochs}_nsteps{n_steps}_nstpf{n_steps_per_fit}_alr{actor_lr}_clr{critic_lr}_" \
-                 f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}_seed{seed}"
+                 f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}"
+    if group_name_prefix:
+        group_name = f"{group_name_prefix}_{group_name}"
     wandb.init(project="corl25_initial_experiments", config=config, dir=results_dir, entity="kicai",
               group=f'{group_name}', mode=mode)
 
