@@ -73,8 +73,10 @@ def experiment(env_name: str = "ant",
 
     config = {**env_params, **agent_params, **training_params}
     mode = "disabled" if debug else "online"
-    group_name = f"{env_name}_{policy_name}_o{order}_f{cutoff_freq}_nep{n_epochs}_nsteps{n_steps}_nstpf{n_steps_per_fit}_alr{actor_lr}_clr{critic_lr}_" \
-                 f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}_ept{ent_projection_type}{'_normstd' if normalize_std else ''}"
+    #group_name = f"{env_name}_{policy_name}_o{order}_f{cutoff_freq}_nep{n_epochs}_nsteps{n_steps}_nstpf{n_steps_per_fit}_alr{actor_lr}_clr{critic_lr}_" \
+    #             f"nf{n_features}_bs{batch_size}_eps{eps}_lam{lam}_std0{std_0}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}_ept{ent_projection_type}{'_normstd' if normalize_std else ''}"
+    group_name = f"{env_name}_{policy_name}_o{order}_f{cutoff_freq}_nstpf{n_steps_per_fit}_alr{actor_lr}_clr{critic_lr}_" \
+                 f"bs{batch_size}_eps{eps}_elb{initial_entropy_lb}_{entropy_lb}_{entropy_lb_ep}_ept{ent_projection_type}{'_normstd' if normalize_std else ''}"
     if group_name_prefix:
         group_name = f"{group_name_prefix}_{group_name}"
     wandb.init(project="corl25_initial_experiments", config=config, dir=results_dir, entity="kicai",
